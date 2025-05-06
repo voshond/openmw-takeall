@@ -62,19 +62,17 @@ local function onTakeAll()
         -- Make sure to notify global script that we've closed the UI
         core.sendGlobalEvent("TakeAll_closeGUI", player)
 
-        -- Display a message about how many items were taken
+        -- Log item count but don't show UI messages
         if itemCount > 0 then
-            ui.showMessage("Took " .. itemCount .. " items from " .. containerName)
+            Debug.takeAll("Took " .. itemCount .. " items from " .. containerName)
         else
-            Debug.takeAll("No items taken")
-            ui.showMessage(containerName .. " is empty or items couldn't be taken")
+            Debug.takeAll("No items taken from container")
         end
 
         -- Reset container reference
         currentContainer = nil
     else
         Debug.takeAll("No container is currently open")
-        ui.showMessage("No container is currently open")
     end
 end
 
