@@ -1,6 +1,6 @@
 local core = require('openmw.core')
 local self = require('openmw.self')
-local Debug = require("scripts.TakeAll.ta_debug")
+local Debug = require("scripts.TakeAll.takeAll_debug")
 
 -- Container animation handling
 local animatingContainers = {}

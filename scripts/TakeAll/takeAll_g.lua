@@ -1,7 +1,7 @@
 local core = require('openmw.core')
 local types = require('openmw.types')
 local world = require('openmw.world')
-local Debug = require("scripts.TakeAll.ta_debug")
+local Debug = require("scripts.TakeAll.takeAll_debug")
 
 -- Initialize with debug message
 Debug.takeAll("Global script initialized")
