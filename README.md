@@ -11,28 +11,26 @@ A simple mod for OpenMW that lets you take all items from a container with a sin
 
 ## Installation
 
-1. Copy the `scripts` directory to your OpenMW data directory
-2. Add `PLAYER:scripts/takeall/takeall_p.lua` to your `.omwscripts` file
+1. Copy the contents of the `openmw-takeall-vX.X.X.zip` directory to your data directory
+2. Add `takeall.omwscripts` to load in your OpenMW Launcher
 3. Launch OpenMW and enjoy!
 
 ## Usage
 
-1. Look at any container
-2. Press the hotkey (default: K)
+1. Open a container
+2. Press the hotkey (default: R)
 3. All items will be transferred to your inventory
 
 ## Configuration
 
 You can modify the following settings in-game:
 
--   Hotkey: Default is K
--   Notification: Enable/disable the display of notifications
--   Range: How far containers can be detected (in units)
+-   Hotkey: Default is R
 
 ## Contributing
 
 Contributions are welcome! Feel free to submit pull requests or open issues.
 
-## License
+### Credits
 
-This project is free software. You can use, modify and distribute it freely.
+Author: voshond
