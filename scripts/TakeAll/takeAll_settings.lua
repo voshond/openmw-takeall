@@ -9,7 +9,7 @@ local settings = storage.playerSection("SettingsTakeAll")
 I.Settings.registerPage {
     key = "SettingsTakeAll",
     l10n = "SettingsTakeAll",
-    name = "Take All",
+    name = "voshond's Take All",
     description = "Settings for the Take All mod."
 }
 

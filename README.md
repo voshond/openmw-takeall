@@ -4,7 +4,7 @@ A simple mod for OpenMW that lets you take all items from a container with a sin
 
 ### Features
 
--   Take all items from a container by pressing a hotkey (default: R)
+-   Take all items from a container by pressing a hotkey (default: `R`)
 
 ### Screenshots
 
@@ -19,14 +19,14 @@ A simple mod for OpenMW that lets you take all items from a container with a sin
 ### Usage
 
 1. Open a container
-2. Press the hotkey (default: R)
+2. Press the hotkey (default: `R`)
 3. All items will be transferred to your inventory
 
 ### Configuration
 
 You can modify the following settings in-game:
 
--   Hotkey: Default is R
+-   Hotkey: Default is `R`
 
 ### Contributing
 

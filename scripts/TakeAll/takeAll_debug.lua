@@ -18,14 +18,6 @@ function Debug.log(module, message)
     end
 end
 
--- Shorthand for specific module logs
-function Debug.takeAll(message)
-    -- Only print debug messages if debug logging is enabled
-    if settings and settings:get("enableDebugLogging") then
-        print("[TakeAll] " .. tostring(message))
-    end
-end
-
 -- Function to report errors that will always print regardless of debug setting
 function Debug.error(module, message)
     print("[ERROR:" .. module .. "] " .. tostring(message))
@@ -36,7 +28,7 @@ function Debug.warning(module, message)
     print("[WARNING:" .. module .. "] " .. tostring(message))
 end
 
--- Utility function to create a conditional print function
+-- Utility function to create a module-specific logger
 function Debug.createPrinter(module)
     return function(message)
         Debug.log(module, message)
@@ -47,5 +39,8 @@ end
 function Debug.isEnabled()
     return settings and settings:get("enableDebugLogging") or false
 end
+
+-- Module-specific loggers
+Debug.takeAll = Debug.createPrinter("TakeAll")
 
 return Debug

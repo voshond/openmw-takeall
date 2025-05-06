@@ -20,20 +20,6 @@ local function testGlobalScript()
     core.sendGlobalEvent("TakeAll_test", { "Test message from player script" })
 end
 
--- Function to take a single item - delegates to global script
-local function takeItem(player, container, item)
-    Debug.takeAll("Taking item: " .. item.type.records[item.recordId].name)
-
-    -- Animate the container
-    if container then
-        container:sendEvent("TakeAll_openAnimation", player)
-    end
-
-    -- Send to global script for processing
-    core.sendGlobalEvent("TakeAll_take", { player, container, item })
-    return true
-end
-
 -- Create the handler for the TakeAll trigger
 local function onTakeAll()
     Debug.takeAll("--------------------------------")
