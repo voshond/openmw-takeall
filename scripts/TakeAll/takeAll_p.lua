@@ -44,7 +44,7 @@ local function onTakeAll()
         Debug.takeAll("Container detected: " .. containerName)
 
         -- Use the global script to take all items
-        local player = self
+        local player = self.object  -- Make sure we're sending the player object
         local disposeCorpse = false -- Could be a setting option in the future
 
         -- First, close the container interface if it's open
@@ -60,7 +60,7 @@ local function onTakeAll()
         local itemCount = core.sendGlobalEvent("TakeAll_takeAll", { player, currentContainer, disposeCorpse }) or 0
 
         -- Make sure to notify global script that we've closed the UI
-        core.sendGlobalEvent("TakeAll_closeGUI", self.object)
+        core.sendGlobalEvent("TakeAll_closeGUI", player)
 
         -- Display a message about how many items were taken
         if itemCount > 0 then
@@ -93,7 +93,7 @@ local function UiModeChanged(data)
         -- Send open animation event when container UI opens normally
         -- This doesn't prevent the UI from showing since it's already showing at this point
         if currentContainer then
-            currentContainer:sendEvent("TakeAll_openAnimation", self)
+            currentContainer:sendEvent("TakeAll_openAnimation", self.object)
         end
         -- Container is being closed
     elseif data.oldMode == "Container" then
@@ -102,7 +102,7 @@ local function UiModeChanged(data)
         -- Only send the close animation if we have a valid container
         if currentContainer then
             -- Send close animation event
-            currentContainer:sendEvent("TakeAll_closeAnimation", self)
+            currentContainer:sendEvent("TakeAll_closeAnimation", self.object)
 
             -- Notify global script that we've closed the UI
             core.sendGlobalEvent("TakeAll_closeGUI", self.object)

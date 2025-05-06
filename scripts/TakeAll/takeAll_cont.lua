@@ -10,7 +10,12 @@ local function openAnimation(data)
     Debug.takeAll("Opening container animation")
 
     -- Get the activator (player)
-    local player = data[1]
+    local player = data and data[1]
+
+    if not player then
+        Debug.takeAll("Warning: No player provided to openAnimation")
+        return
+    end
 
     -- Don't interrupt default container behavior
     -- We only want to play animations when the TakeAll key is pressed
@@ -30,7 +35,12 @@ local function closeAnimation(data)
     Debug.takeAll("Closing container animation")
 
     -- Get the activator (player)
-    local player = data[1]
+    local player = data and data[1]
+
+    if not player then
+        Debug.takeAll("Warning: No player provided to closeAnimation")
+        return
+    end
 
     -- Remove this player from animating containers
     animatingContainers[player.id] = nil
