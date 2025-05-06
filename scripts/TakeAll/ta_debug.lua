@@ -1,19 +1,20 @@
-local storage = require('openmw.storage')
-local settings = storage.playerSection("SettingsTakeAll")
-
 -- Debug module to centralize all logging functionality
 local Debug = {}
 
+-- Global debug enable flag (set to true for development)
+local enableDebugLogging = true
+
 -- Main logging function that checks if debug is enabled before printing
 function Debug.log(module, message)
-    if settings:get("enableDebugLogging") then
+    if enableDebugLogging then
         print("[" .. module .. "] " .. tostring(message))
     end
 end
 
 -- Shorthand for specific module logs
 function Debug.takeAll(message)
-    Debug.log("TakeAll", message)
+    -- Print TakeAll messages regardless of debug setting for diagnostic purposes
+    print("[TakeAll] " .. tostring(message))
 end
 
 -- Function to report errors that will always print regardless of debug setting
@@ -28,7 +29,7 @@ end
 
 -- Function to check if debug logging is enabled
 function Debug.isEnabled()
-    return settings:get("enableDebugLogging")
+    return enableDebugLogging
 end
 
 return Debug

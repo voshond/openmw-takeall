@@ -1,1 +1,3 @@
 PLAYER:scripts/TakeAll/takeAll_p.lua 
+GLOBAL:scripts/TakeAll/takeAll_g.lua
+CONTAINER:scripts/TakeAll/takeAll_cont.lua 
