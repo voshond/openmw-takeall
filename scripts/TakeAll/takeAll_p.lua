@@ -49,26 +49,29 @@ local function onTakeAll()
 
         -- First, close the container interface if it's open
         if I.UI.getMode() == "Container" then
+            -- Proper way to close UI in OpenMW
             I.UI.setMode()
         end
 
-        -- Animate container opening
+        -- Animate container opening first
         currentContainer:sendEvent("TakeAll_openAnimation", player)
 
-        -- Process items immediately instead of using async
-        -- Send to global script for processing
+        -- Process the items
         local itemCount = core.sendGlobalEvent("TakeAll_takeAll", { player, currentContainer, disposeCorpse }) or 0
+
+        -- Make sure to notify global script that we've closed the UI
+        core.sendGlobalEvent("TakeAll_closeGUI", self.object)
 
         -- Display a message about how many items were taken
         if itemCount > 0 then
             ui.showMessage("Took " .. itemCount .. " items from " .. containerName)
         else
-            Debug.takeAll("No items taken, opening standard container UI as fallback")
+            Debug.takeAll("No items taken")
             ui.showMessage(containerName .. " is empty or items couldn't be taken")
-
-            -- Open standard container as a fallback
-            I.UI.setMode("Container", { target = currentContainer })
         end
+
+        -- Reset container reference
+        currentContainer = nil
     else
         Debug.takeAll("No container is currently open")
         ui.showMessage("No container is currently open")
@@ -79,22 +82,26 @@ end
 local function UiModeChanged(data)
     Debug.takeAll("UI Mode changed from " .. (data.oldMode or "none") .. " to " .. (data.newMode or "none"))
 
+    -- Container is being opened
     if data.newMode == "Container" and data.arg then
         Debug.takeAll("Container opened: " .. data.arg.type.records[data.arg.recordId].name)
         currentContainer = data.arg
 
-        -- Send open animation event when container UI opens normally
-        currentContainer:sendEvent("TakeAll_openAnimation", self)
-    elseif data.oldMode == "Container" and currentContainer then
+        -- Notify global script that we've opened the UI
+        core.sendGlobalEvent("TakeAll_openGUI", self.object)
+        -- Container is being closed
+    elseif data.oldMode == "Container" then
         Debug.takeAll("Container closed")
-        -- Animate container closing
+
+        -- Only send the close animation if we have a valid container
         if currentContainer then
+            -- Send close animation event
             currentContainer:sendEvent("TakeAll_closeAnimation", self)
 
-            -- After short delay, clear the container reference
-            -- Don't use async timer here - just clear it immediately
-            currentContainer = nil
-        else
+            -- Notify global script that we've closed the UI
+            core.sendGlobalEvent("TakeAll_closeGUI", self.object)
+
+            -- Reset container reference
             currentContainer = nil
         end
     end
@@ -112,10 +119,8 @@ local function onInit()
         description = "Take all items from containers with a single key press"
     }
 
-    -- Register our handler to be called when the TakeAll trigger is activated
-    input.registerTriggerHandler("TakeAll", async:callback(function()
-        onTakeAll()
-    end))
+    -- Register our handler using async:callback pattern from QuickLoot
+    input.registerTriggerHandler("TakeAll", async:callback(onTakeAll))
 
     -- Test global script communication on init
     testGlobalScript()
@@ -124,6 +129,9 @@ end
 -- Clean up function for when script is unloaded
 local function onSave()
     -- Reset the container reference when saving
+    if currentContainer then
+        core.sendGlobalEvent("TakeAll_closeGUI", self.object)
+    end
     currentContainer = nil
     return {}
 end
@@ -133,6 +141,9 @@ local function onLoad(data)
     -- Initialize the TakeAll system when loading a save
     onInit()
     -- Reset container reference on load
+    if currentContainer then
+        core.sendGlobalEvent("TakeAll_closeGUI", self.object)
+    end
     currentContainer = nil
     return {}
 end

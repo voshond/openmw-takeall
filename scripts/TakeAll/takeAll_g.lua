@@ -10,6 +10,7 @@ Debug.takeAll("Global script initialized")
 local activateNextUpdate = {}
 local activateSecondNextUpdate = {}
 local deleteSecondNextUpdate = {}
+local openedGUIs = {} -- Track opened GUIs
 
 -- Process the activation queue - copied directly from QuickLoot's onUpdate function
 local function onUpdate(dt)
@@ -159,6 +160,12 @@ return {
         TakeAll_test = function(data)
             Debug.takeAll("Test event received: " .. tostring(data[1]))
             return true
+        end,
+        TakeAll_openGUI = function(playerObject)
+            openedGUIs[playerObject.id] = world.getGameTime()
+        end,
+        TakeAll_closeGUI = function(playerObject)
+            openedGUIs[playerObject.id] = nil
         end
     }
 }
