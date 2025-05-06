@@ -4,13 +4,9 @@
 
 TakeAll Initial Release
 
-
 ## v1.0.0 (Initial Release)
 
--   Added ability to take all items from a container with a hotkey (default: K)
--   Implemented container detection based on player's line of sight
--   Added optional notifications for item collection
--   Added configurable settings (hotkey, notification toggle, detection range)
+-   Added ability to take all items from a container with a hotkey (default: R)
 
 ## MOMW Mod Template Changelog
 
@@ -19,4 +15,3 @@ TakeAll Initial Release
 Initial version of the mod.
 
 <!--[Download Link](https://gitlab.com/modding-openmw/momw-mod-template/-/packages/TODO)-->
-
