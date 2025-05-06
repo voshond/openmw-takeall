@@ -89,6 +89,12 @@ local function UiModeChanged(data)
 
         -- Notify global script that we've opened the UI
         core.sendGlobalEvent("TakeAll_openGUI", self.object)
+
+        -- Send open animation event when container UI opens normally
+        -- This doesn't prevent the UI from showing since it's already showing at this point
+        if currentContainer then
+            currentContainer:sendEvent("TakeAll_openAnimation", self)
+        end
         -- Container is being closed
     elseif data.oldMode == "Container" then
         Debug.takeAll("Container closed")
