@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 1.0.1 (2025-05-06)
+
+Ability to dispose of corpse when holding shift when pressing key.
+
+
 ## Version 1.0.0 (2025-05-06)
 
 TakeAll Initial Release
@@ -15,3 +20,4 @@ TakeAll Initial Release
 Initial version of the mod.
 
 <!--[Download Link](https://gitlab.com/modding-openmw/momw-mod-template/-/packages/TODO)-->
+
