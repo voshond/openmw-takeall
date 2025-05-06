@@ -5,9 +5,10 @@ A simple mod for OpenMW that lets you take all items from a container with a sin
 ### Features
 
 -   Take all items from a container by pressing a hotkey (default: R)
--   Automatically detects the container you're looking at
--   Configurable detection range
--   Optional notifications
+
+### Screenshots
+
+![Settings](https://i.imgur.com/X1f5m7Y.jpeg)
 
 ### Installation
 
