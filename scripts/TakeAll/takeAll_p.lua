@@ -30,8 +30,10 @@ local function onTakeAll()
         Debug.takeAll("Container detected: " .. containerName)
 
         -- Use the global script to take all items
-        local player = self.object  -- Make sure we're sending the player object
-        local disposeCorpse = false -- Could be a setting option in the future
+        local player = self
+            .object                       -- Make sure we're sending the player object
+        local disposeCorpse = input.isShiftPressed() and
+            settings:get("disposeCorpse") -- Check if Shift is pressed and disposal is enabled
 
         -- First, close the container interface if it's open
         if I.UI.getMode() == "Container" then
@@ -51,6 +53,9 @@ local function onTakeAll()
         -- Log item count but don't show UI messages
         if itemCount > 0 then
             Debug.takeAll("Took " .. itemCount .. " items from " .. containerName)
+            if disposeCorpse and types.Actor.objectIsInstance(currentContainer) and types.Actor.isDead(currentContainer) then
+                Debug.takeAll("Disposed of corpse: " .. containerName)
+            end
         else
             Debug.takeAll("No items taken from container")
         end

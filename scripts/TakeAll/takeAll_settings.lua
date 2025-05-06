@@ -42,6 +42,13 @@ I.Settings.registerGroup {
                 type = "trigger"
             }
         },
+        {
+            key = "disposeCorpse",
+            renderer = "checkbox",
+            name = "Enable Corpse Disposal",
+            description = "If enabled, holding SHIFT while pressing the Take All hotkey will dispose of corpses after looting them.",
+            default = true
+        },
     },
 }
 
