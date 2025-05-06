@@ -8,7 +8,8 @@ param(
 $sourceDir = Get-Location
 $modDir = "C:\Users\Martin\AppData\Local\ModOrganizer\Morrowind\mods\takeall"
 $scriptsDir = "$modDir\scripts"
-$takeallDir = "$scriptsDir\takeall"
+$sourceScriptsDir = "$sourceDir\scripts"
+$takeallDir = "$scriptsDir\TakeAll"
 
 Write-Host " "
 Write-Host " "
@@ -82,24 +83,36 @@ if (-not (Test-Path $scriptsDir)) {
 
 if (-not (Test-Path $takeallDir)) {
     New-Item -ItemType Directory -Path $takeallDir -Force
-    Write-Host "Created takeall directory: $takeallDir"
+    Write-Host "Created TakeAll directory: $takeallDir"
 }
 
 # Clean directories before copying to ensure a clean state
 if (Test-Path $scriptsDir) {
-    # Clean the scripts directory first
-    Get-ChildItem -Path $scriptsDir -Filter "takeall_*.lua" | Remove-Item -Force
-    Write-Host "Removed loose scripts from scripts directory"
-    
-    # Clean the takeall directory
-    if (Test-Path $takeallDir) {
-        Remove-Item -Path "$takeallDir\*" -Recurse -Force
-        Write-Host "Cleaned takeall directory"
+    # Clean the existing scripts directory
+    Remove-Item -Path "$scriptsDir\*" -Recurse -Force
+    Write-Host "Cleaned scripts directory"
+}
+
+# Copy the scripts directory and its contents (excluding Examples folder)
+Write-Host "Copying scripts folder and contents from $sourceScriptsDir to $scriptsDir"
+Get-ChildItem -Path $sourceScriptsDir -Exclude "Example" | ForEach-Object {
+    if ($_.PSIsContainer) {
+        # It's a directory, create it and copy its contents
+        $targetDir = Join-Path $scriptsDir $_.Name
+        if (-not (Test-Path $targetDir)) {
+            New-Item -ItemType Directory -Path $targetDir -Force | Out-Null
+        }
+        Copy-Item -Path "$($_.FullName)\*" -Destination $targetDir -Recurse -Force
+        Write-Host "Copied directory: $($_.Name)"
+    }
+    else {
+        # It's a file, copy it directly to scripts dir
+        Copy-Item -Path $_.FullName -Destination $scriptsDir -Force
+        Write-Host "Copied file: $($_.Name)"
     }
 }
 
-# Copy all relevant files - source from scripts/takeall dir
-Copy-Item -Path "$sourceDir\scripts\takeall\takeall_*.lua" -Destination $takeallDir -Force
+# Copy the omwscripts file
 Copy-Item -Path "$sourceDir\takeall.omwscripts" -Destination $modDir -Force
 Write-Host "Copied all mod files to $modDir"
 
@@ -191,7 +204,7 @@ public class Win32FocusHelper {
         
         # Start OpenMW
         $openmwExe = "D:\Games\Morrowind\OpenMW current\openmw.exe"
-        $openmwArgs = "--script-verbose --skip-menu --load `"C:\Users\Martin\Documents\My Games\OpenMW\saves\Volel_Indarys\Quicksave.omwsave`""
+        $openmwArgs = "--script-verbose --skip-menu --load `"C:\Users\Martin\Documents\My Games\OpenMW\saves\Volel_Indarys\1.omwsave`" --window-border=1 --window-mode=2 --resolution=1920,1080"
 
         if (Test-Path $openmwExe) {
             Write-Host "Starting OpenMW..."
@@ -233,7 +246,7 @@ elseif (-not $focus) {
 
     # Start OpenMW
     $openmwExe = "D:\Games\Morrowind\OpenMW current\openmw.exe"
-    $openmwArgs = "--script-verbose --skip-menu --load `"C:\Users\Martin\Documents\My Games\OpenMW\saves\Volel_Indarys\Quicksave.omwsave`""
+    $openmwArgs = "--script-verbose --skip-menu --load `"C:\Users\Martin\Documents\My Games\OpenMW\saves\Volel_Indarys\1.omwsave`" --window-border=1 --window-mode=2 --resolution=1920,1080"
 
     if (Test-Path $openmwExe) {
         Write-Host "Starting OpenMW..."

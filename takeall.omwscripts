@@ -1,2 +1,1 @@
-PLAYER: scripts/TakeAll/takeall_player.lua
-GLOBAL: scripts/TakeAll/takeall_global.lua
+PLAYER:scripts/TakeAll/takeAll_p.lua 
