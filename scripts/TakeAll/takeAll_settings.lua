@@ -36,7 +36,7 @@ I.Settings.registerGroup {
             renderer = "inputBinding",
             name = "Take All Hotkey",
             description = "Key binding to trigger the Take All functionality.",
-            default = "F",
+            default = "R",
             argument = {
                 key = "TakeAll",
                 type = "trigger"
