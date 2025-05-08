@@ -28,19 +28,9 @@ function Debug.warning(module, message)
     print("[WARNING:" .. module .. "] " .. tostring(message))
 end
 
--- Utility function to create a module-specific logger
-function Debug.createPrinter(module)
-    return function(message)
-        Debug.log(module, message)
-    end
-end
-
 -- Function to check if debug logging is enabled
 function Debug.isEnabled()
     return settings and settings:get("enableDebugLogging") or false
 end
-
--- Module-specific loggers
-Debug.takeAll = Debug.createPrinter("TakeAll")
 
 return Debug

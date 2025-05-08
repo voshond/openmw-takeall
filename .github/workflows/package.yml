@@ -42,10 +42,6 @@ jobs:
                   # Copy files we want to distribute
                   Copy-Item -Path "scripts\takeall" -Destination "$stagingDir\scripts\takeall\" -Recurse
                   Copy-Item -Path "takeall.omwscripts" -Destination "$stagingDir\"
-                  # Copy any additional files like README, LICENSE, etc.
-                  if (Test-Path "README.md") { Copy-Item -Path "README.md" -Destination "$stagingDir\" }
-                  if (Test-Path "CHANGELOG.md") { Copy-Item -Path "CHANGELOG.md" -Destination "$stagingDir\" }
-                  if (Test-Path "LICENSE") { Copy-Item -Path "LICENSE" -Destination "$stagingDir\" }
 
             - name: Upload as Artifact
               uses: actions/upload-artifact@v4

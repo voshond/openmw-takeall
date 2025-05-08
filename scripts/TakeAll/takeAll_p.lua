@@ -16,18 +16,18 @@ local currentContainer = nil
 
 -- Test global script communication
 local function testGlobalScript()
-    Debug.takeAll("Testing global script communication")
+    Debug.log("TakeAll", "Testing global script communication")
     core.sendGlobalEvent("TakeAll_test", { "Test message from player script" })
 end
 
 -- Create the handler for the TakeAll trigger
 local function onTakeAll()
-    Debug.takeAll("--------------------------------")
-    Debug.takeAll("TakeAll trigger activated!")
+    Debug.log("TakeAll", "--------------------------------")
+    Debug.log("TakeAll", "TakeAll trigger activated!")
 
     if currentContainer then
         local containerName = currentContainer.type.records[currentContainer.recordId].name
-        Debug.takeAll("Container detected: " .. containerName)
+        Debug.log("TakeAll", "Container detected: " .. containerName)
 
         -- Use the global script to take all items
         local player = self
@@ -52,28 +52,28 @@ local function onTakeAll()
 
         -- Log item count but don't show UI messages
         if itemCount > 0 then
-            Debug.takeAll("Took " .. itemCount .. " items from " .. containerName)
+            Debug.log("TakeAll", "Took " .. itemCount .. " items from " .. containerName)
             if disposeCorpse and types.Actor.objectIsInstance(currentContainer) and types.Actor.isDead(currentContainer) then
-                Debug.takeAll("Disposed of corpse: " .. containerName)
+                Debug.log("TakeAll", "Disposed of corpse: " .. containerName)
             end
         else
-            Debug.takeAll("No items taken from container")
+            Debug.log("TakeAll", "No items taken from container")
         end
 
         -- Reset container reference
         currentContainer = nil
     else
-        Debug.takeAll("No container is currently open")
+        Debug.log("TakeAll", "No container is currently open")
     end
 end
 
 -- Function to handle UI mode changes (detect when containers are opened/closed)
 local function UiModeChanged(data)
-    Debug.takeAll("UI Mode changed from " .. (data.oldMode or "none") .. " to " .. (data.newMode or "none"))
+    Debug.log("TakeAll", "UI Mode changed from " .. (data.oldMode or "none") .. " to " .. (data.newMode or "none"))
 
     -- Container is being opened
     if data.newMode == "Container" and data.arg then
-        Debug.takeAll("Container opened: " .. data.arg.type.records[data.arg.recordId].name)
+        Debug.log("TakeAll", "Container opened: " .. data.arg.type.records[data.arg.recordId].name)
         currentContainer = data.arg
 
         -- Notify global script that we've opened the UI
@@ -86,7 +86,7 @@ local function UiModeChanged(data)
         end
         -- Container is being closed
     elseif data.oldMode == "Container" then
-        Debug.takeAll("Container closed")
+        Debug.log("TakeAll", "Container closed")
 
         -- Only send the close animation if we have a valid container
         if currentContainer then
@@ -104,7 +104,7 @@ end
 
 -- Initialize function for the TakeAll module
 local function onInit()
-    Debug.takeAll("TakeAll mod initialized!")
+    Debug.log("TakeAll", "TakeAll mod initialized!")
 
     -- Register the TakeAll trigger in the input system
     input.registerTrigger {

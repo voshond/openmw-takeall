@@ -4,7 +4,7 @@ local world = require('openmw.world')
 local Debug = require("scripts.TakeAll.takeAll_debug")
 
 -- Initialize with debug message
-Debug.takeAll("Global script initialized")
+Debug.log("TakeAll", "Global script initialized")
 
 -- Activation queues - this follows QuickLoot's approach exactly
 local activateNextUpdate = {}
@@ -19,18 +19,18 @@ local function onUpdate(dt)
         local player = t[2]
         local container = t[3]
 
-        Debug.takeAll("Processing item: " .. item.type.records[item.recordId].name)
+        Debug.log("TakeAll", "Processing item: " .. item.type.records[item.recordId].name)
 
         -- Set ownership if container is provided
         if container then
-            Debug.takeAll("Setting ownership for: " .. item.type.records[item.recordId].name)
+            Debug.log("TakeAll", "Setting ownership for: " .. item.type.records[item.recordId].name)
             item.owner.factionId = container.owner.factionId
             item.owner.factionRank = container.owner.factionRank
             item.owner.recordId = container.owner.recordId
         end
 
         -- Activate the item
-        Debug.takeAll("Activating item: " .. item.type.records[item.recordId].name)
+        Debug.log("TakeAll", "Activating item: " .. item.type.records[item.recordId].name)
         item:activateBy(player)
     end
 
@@ -39,7 +39,7 @@ local function onUpdate(dt)
         if t[2] > 1 then
             t[2] = 1
         else
-            Debug.takeAll("Removing corpse: " .. t[1].recordId)
+            Debug.log("TakeAll", "Removing corpse: " .. t[1].recordId)
             t[1]:remove(1)
             table.remove(deleteSecondNextUpdate, i)
         end
@@ -62,7 +62,7 @@ local function take(data)
     local item = data[3]
     local isPickpocketing = data[4] or false
 
-    Debug.takeAll("Global take received for: " .. item.type.records[item.recordId].name)
+    Debug.log("TakeAll", "Global take received for: " .. item.type.records[item.recordId].name)
 
     -- For pickpocketing or books, move directly
     if isPickpocketing or item.type == types.Book then
@@ -97,7 +97,7 @@ local function takeAll(data)
     local container = data[2]
     local disposeCorpse = data[3] or false
 
-    Debug.takeAll("TakeAll received for container: " .. container.recordId)
+    Debug.log("TakeAll", "TakeAll received for container: " .. container.recordId)
 
     -- Ensure the container is resolved
     types.Container.inventory(container):resolve()
@@ -108,27 +108,27 @@ local function takeAll(data)
     for _, item in pairs(types.Container.inventory(container):getAll()) do
         local itemRecord = item.type.records[item.recordId]
 
-        Debug.takeAll("Processing container item: " .. item.recordId)
+        Debug.log("TakeAll", "Processing container item: " .. item.recordId)
 
         -- Skip uncarriable items
         if not itemRecord.name or itemRecord.name == "" or not types.Item.isCarriable(item) then
-            Debug.takeAll("Skipping uncarriable item: " .. item.recordId)
+            Debug.log("TakeAll", "Skipping uncarriable item: " .. item.recordId)
             -- Books move directly
         elseif item.type == types.Book then
-            Debug.takeAll("Moving book directly: " .. itemRecord.name)
+            Debug.log("TakeAll", "Moving book directly: " .. itemRecord.name)
             item:moveInto(types.Player.inventory(player))
             itemCount = itemCount + 1
             -- Gold needs special handling
         elseif item.recordId == "gold_001" or item.recordId == "gold_005" or
             item.recordId == "gold_010" or item.recordId == "gold_025" or
             item.recordId == "gold_100" then
-            Debug.takeAll("Gold handling: " .. item.recordId)
+            Debug.log("TakeAll", "Gold handling: " .. item.recordId)
             item:teleport(player.cell, player.position, player.rotation)
             table.insert(activateSecondNextUpdate, { item, player, container })
             itemCount = itemCount + 1
             -- Standard items
         else
-            Debug.takeAll("Standard item handling: " .. itemRecord.name)
+            Debug.log("TakeAll", "Standard item handling: " .. itemRecord.name)
             item:teleport(player.cell, player.position, player.rotation)
             item.owner.factionId = container.owner.factionId
             item.owner.factionRank = container.owner.factionRank
@@ -140,7 +140,7 @@ local function takeAll(data)
 
     -- Handle corpse disposal if needed
     if disposeCorpse and types.Actor.objectIsInstance(container) and types.Actor.isDead(container) then
-        Debug.takeAll("Queueing corpse disposal for: " .. container.recordId)
+        Debug.log("TakeAll", "Queueing corpse disposal for: " .. container.recordId)
         table.insert(deleteSecondNextUpdate, { container, 2 })
     end
 
@@ -158,7 +158,7 @@ return {
         TakeAll_take = take,
         TakeAll_takeAll = takeAll,
         TakeAll_test = function(data)
-            Debug.takeAll("Test event received: " .. tostring(data[1]))
+            Debug.log("TakeAll", "Test event received: " .. tostring(data[1]))
             return true
         end,
         TakeAll_openGUI = function(playerObject)
