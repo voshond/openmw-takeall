@@ -1,7 +1,6 @@
 param(
     [switch]$noLog,
-    [switch]$focus,
-    [switch]$resetSettings
+    [switch]$focus  
 )
 
 # Copy mod files to ModOrganizer folder
@@ -11,64 +10,8 @@ $scriptsDir = "$modDir\scripts"
 $sourceScriptsDir = "$sourceDir\scripts"
 $takeallDir = "$scriptsDir\TakeAll"
 
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
-Write-Host " "
+Clear-Host
 Write-Host "NEW DEBUG"
-
 
 # Check if target directory exists, create if not
 if (-not (Test-Path $modDir)) {
@@ -115,20 +58,6 @@ Get-ChildItem -Path $sourceScriptsDir -Exclude "Example" | ForEach-Object {
 # Copy the omwscripts file
 Copy-Item -Path "$sourceDir\takeall.omwscripts" -Destination $modDir -Force
 Write-Host "Copied all mod files to $modDir"
-
-# Reset settings if requested
-if ($resetSettings) {
-    $settingsPath = "$env:USERPROFILE\Documents\My Games\OpenMW\settings-default.cfg"
-    $jsonPath = "$env:USERPROFILE\Documents\My Games\OpenMW\player-SettingsOpenMWTakeall.json"
-    
-    # Delete settings JSON if it exists to reset mod settings
-    if (Test-Path $jsonPath) {
-        Remove-Item -Path $jsonPath -Force
-        Write-Host "Reset mod settings by removing $jsonPath"
-    }
-    
-    Write-Host "Settings have been reset. The mod will use default settings on next game launch."
-}
 
 # Find the main OpenMW process - get all processes and filter for the game window
 $openmwProcesses = Get-Process -Name "openmw" -ErrorAction SilentlyContinue | Where-Object { $_.MainWindowTitle -ne "" }
