@@ -6,7 +6,7 @@ param(
 
 # Copy mod files to ModOrganizer folder
 $sourceDir = Get-Location
-$modDir = "C:\Users\Martin\AppData\Local\ModOrganizer\Morrowind\mods\takeall"
+$modDir = "C:\Users\Martin\AppData\Local\ModOrganizer\Morrowind\mods\voshond's TakeAll (OpenMW)"
 $scriptsDir = "$modDir\scripts"
 $sourceScriptsDir = "$sourceDir\scripts"
 $takeallDir = "$scriptsDir\TakeAll"
@@ -204,7 +204,7 @@ public class Win32FocusHelper {
         
         # Start OpenMW
         $openmwExe = "D:\Games\Morrowind\OpenMW current\openmw.exe"
-        $openmwArgs = "--script-verbose --skip-menu --load `"C:\Users\Martin\Documents\My Games\OpenMW\saves\Volel_Indarys\1.omwsave`" --window-border=1 --window-mode=2 --resolution=1920,1080"
+        $openmwArgs = "--script-verbose --skip-menu --load `"C:\Users\Martin\Documents\My Games\OpenMW\saves\Volel_Indarys\Testing.omwsave`" --window-border=1 --window-mode=2 --resolution=1920,1080"
 
         if (Test-Path $openmwExe) {
             Write-Host "Starting OpenMW..."
@@ -246,7 +246,7 @@ elseif (-not $focus) {
 
     # Start OpenMW
     $openmwExe = "D:\Games\Morrowind\OpenMW current\openmw.exe"
-    $openmwArgs = "--script-verbose --skip-menu --load `"C:\Users\Martin\Documents\My Games\OpenMW\saves\Volel_Indarys\1.omwsave`" --window-border=1 --window-mode=2 --resolution=1920,1080"
+    $openmwArgs = "--script-verbose --skip-menu --load `"C:\Users\Martin\Documents\My Games\OpenMW\saves\Volel_Indarys\Testing.omwsave`" --window-border=1 --window-mode=2 --resolution=1920,1080"
 
     if (Test-Path $openmwExe) {
         Write-Host "Starting OpenMW..."

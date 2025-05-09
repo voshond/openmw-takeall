@@ -147,6 +147,24 @@ local function takeAll(data)
     return itemCount
 end
 
+-- Take a book
+local function takeBook(data)
+    if not data or #data < 2 then
+        Debug.error("TakeAll_Global", "Invalid data received in takeBook event")
+        return
+    end
+
+    local player = data[1]
+    local book = data[2]
+
+    Debug.log("TakeAll", "Taking book: " .. book.type.records[book.recordId].name)
+
+    -- Move the book to player's inventory
+    book:moveInto(types.Player.inventory(player))
+
+    return true
+end
+
 -- Register event handlers and engine callbacks
 return {
     interfaceName = "TakeAll_Global",
@@ -157,6 +175,7 @@ return {
     eventHandlers = {
         TakeAll_take = take,
         TakeAll_takeAll = takeAll,
+        TakeAll_takeBook = takeBook,
         TakeAll_test = function(data)
             Debug.log("TakeAll", "Test event received: " .. tostring(data[1]))
             return true

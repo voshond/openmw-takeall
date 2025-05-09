@@ -49,6 +49,13 @@ I.Settings.registerGroup {
             description = "If enabled, holding SHIFT while pressing the Take All hotkey will dispose of corpses after looting them.",
             default = true
         },
+        {
+            key = "takeBooks",
+            renderer = "checkbox",
+            name = "Take Books and Scrolls",
+            description = "If enabled, the Take All hotkey will also work on books and scrolls when they are open, adding them to your inventory.",
+            default = true
+        },
     },
 }
 

@@ -13,6 +13,8 @@ local TakeAll = {}
 
 -- Variable to store the currently opened container
 local currentContainer = nil
+-- Variable to store the currently opened book or scroll
+local currentBook = nil
 
 -- Test global script communication
 local function testGlobalScript()
@@ -62,8 +64,21 @@ local function onTakeAll()
 
         -- Reset container reference
         currentContainer = nil
+    elseif currentBook ~= nil and settings:get("takeBooks") then
+        Debug.log("TakeAll", "Book or scroll detected, taking it")
+
+        -- Close the book/scroll interface
+        if I.UI.getMode() == "Book" or I.UI.getMode() == "Scroll" then
+            I.UI.setMode()
+        end
+
+        -- Take the book or scroll using the global script
+        core.sendGlobalEvent("TakeAll_takeBook", { self.object, currentBook })
+
+        -- Reset book reference
+        currentBook = nil
     else
-        Debug.log("TakeAll", "No container is currently open")
+        Debug.log("TakeAll", "No container or book is currently open")
     end
 end
 
@@ -75,6 +90,7 @@ local function UiModeChanged(data)
     if data.newMode == "Container" and data.arg then
         Debug.log("TakeAll", "Container opened: " .. data.arg.type.records[data.arg.recordId].name)
         currentContainer = data.arg
+        currentBook = nil
 
         -- Notify global script that we've opened the UI
         core.sendGlobalEvent("TakeAll_openGUI", self.object)
@@ -84,6 +100,22 @@ local function UiModeChanged(data)
         if currentContainer then
             currentContainer:sendEvent("TakeAll_openAnimation", self.object)
         end
+        -- Book is being opened
+    elseif data.newMode == "Book" and data.arg then
+        Debug.log("TakeAll", "Book opened: " .. data.arg.type.records[data.arg.recordId].name)
+        currentBook = data.arg
+        currentContainer = nil
+
+        -- Notify global script that we've opened the UI
+        core.sendGlobalEvent("TakeAll_openGUI", self.object)
+        -- Scroll is being opened
+    elseif data.newMode == "Scroll" and data.arg then
+        Debug.log("TakeAll", "Scroll opened: " .. data.arg.type.records[data.arg.recordId].name)
+        currentBook = data.arg
+        currentContainer = nil
+
+        -- Notify global script that we've opened the UI
+        core.sendGlobalEvent("TakeAll_openGUI", self.object)
         -- Container is being closed
     elseif data.oldMode == "Container" then
         Debug.log("TakeAll", "Container closed")
@@ -99,6 +131,24 @@ local function UiModeChanged(data)
             -- Reset container reference
             currentContainer = nil
         end
+        -- Book is being closed
+    elseif data.oldMode == "Book" then
+        Debug.log("TakeAll", "Book closed")
+
+        -- Notify global script that we've closed the UI
+        core.sendGlobalEvent("TakeAll_closeGUI", self.object)
+
+        -- Reset book reference
+        currentBook = nil
+        -- Scroll is being closed
+    elseif data.oldMode == "Scroll" then
+        Debug.log("TakeAll", "Scroll closed")
+
+        -- Notify global script that we've closed the UI
+        core.sendGlobalEvent("TakeAll_closeGUI", self.object)
+
+        -- Reset book reference
+        currentBook = nil
     end
 end
 
@@ -127,7 +177,11 @@ local function onSave()
     if currentContainer then
         core.sendGlobalEvent("TakeAll_closeGUI", self.object)
     end
+    if currentBook then
+        core.sendGlobalEvent("TakeAll_closeGUI", self.object)
+    end
     currentContainer = nil
+    currentBook = nil
     return {}
 end
 
@@ -139,7 +193,11 @@ local function onLoad(data)
     if currentContainer then
         core.sendGlobalEvent("TakeAll_closeGUI", self.object)
     end
+    if currentBook then
+        core.sendGlobalEvent("TakeAll_closeGUI", self.object)
+    end
     currentContainer = nil
+    currentBook = nil
     return {}
 end
 
